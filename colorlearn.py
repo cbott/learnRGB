@@ -2,14 +2,18 @@ from Tkinter import *
 import random
 import tkFont
 
+def to_hex(rgb):
+    """Change an (r,g,b) tuple to a tkinter-compatible hex string"""
+    return '#%02x%02x%02x' % rgb
+
 class Application(Frame):
     def __init__(self, master):
         #canvas / colored rectangle dimensions
         self.width = 1000
         self.height = 500
         #answer rectangle dimenstions
-        self.ans_width = 100
-        self.ans_height = 100
+        self.ans_width = 150
+        self.ans_height= 150
         #Actual color of the displayed rectangle (r,g,b)
         self.current_color = (0,0,0)
 
@@ -24,7 +28,7 @@ class Application(Frame):
     def next_color(self):
         """Change the color currently displayed"""
         self.current_color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
-        self.color_canvas.create_rectangle(0,0,self.width,self.height, fill='#%02x%02x%02x' % self.current_color)
+        self.color_canvas.create_rectangle(0,0,self.width,self.height, fill=to_hex(self.current_color))
 
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
@@ -43,7 +47,7 @@ class Application(Frame):
         self.out.insert(END, "Your Score:%i"%score)
 
         #Show the user what their answer was
-        self.answer_canvas.create_rectangle(1,20,self.ans_width-1,self.ans_height-1, fill='#%02x%02x%02x' % (r,g,b))
+        self.answer_canvas.create_rectangle(1,20,self.ans_width-1,self.ans_height-1, fill=to_hex((r,g,b)))
 
             
     def generate(self):
@@ -82,7 +86,7 @@ class Application(Frame):
         #Field to show the color that the user entered
         self.answer_canvas = Canvas(self, width=self.ans_width, height=self.ans_height)
         self.answer_canvas.create_rectangle(1,1,self.ans_width,self.ans_height)
-        self.answer_canvas.create_text(2,1,text="Your Answer:",anchor=NW)
+        self.answer_canvas.create_text(self.ans_width/2,1,text="Your Answer:",anchor=N)
         self.answer_canvas.grid(row=5, column=2)
 
 root = Tk()
