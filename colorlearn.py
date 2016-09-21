@@ -7,6 +7,9 @@ class Application(Frame):
         #canvas / colored rectangle dimensions
         self.width = 1000
         self.height = 500
+        #answer rectangle dimenstions
+        self.ans_width = 100
+        self.ans_height = 100
         #Actual color of the displayed rectangle (r,g,b)
         self.current_color = (0,0,0)
 
@@ -21,7 +24,7 @@ class Application(Frame):
     def next_color(self):
         """Change the color currently displayed"""
         self.current_color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
-        self.w.create_rectangle(0,0,1000,500, fill='#%02x%02x%02x' % self.current_color)
+        self.color_canvas.create_rectangle(0,0,self.width,self.height, fill='#%02x%02x%02x' % self.current_color)
 
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
@@ -38,13 +41,18 @@ class Application(Frame):
         diffsum = abs(self.current_color[0] - r) + abs(self.current_color[1] - g) + abs(self.current_color[2] - b)
         score = int(((765 - diffsum)/765.0)**2 * 100)
         self.out.insert(END, "Your Score:%i"%score)
+
+        #Show the user what their answer was
+        self.answer_canvas.create_rectangle(1,20,self.ans_width-1,self.ans_height-1, fill='#%02x%02x%02x' % (r,g,b))
+
             
     def generate(self):
         """Draw fields on the window"""
 
         #Canvas used to display the color rectangle
-        self.w = Canvas(self, width=1000, height=500)
-        self.w.grid(row=0, column=0, columnspan=4)
+        self.color_canvas = Canvas(self, width=self.width, height=self.height)
+        self.color_canvas.grid(row=0, column=0, columnspan=4)
+
 
         Label(self, font=self.big_font, text="Red:").grid(row=1, column=0)
         self.r_in = Entry(self, font=self.big_font)
@@ -68,8 +76,14 @@ class Application(Frame):
         self.btn_color.bind('<Return>', lambda x:[self.next_color(), self.r_in.focus()])
 
         #The text output section - display scores and results
-        self.out = Text(self, width=50, height=4, font=self.big_font)
+        self.out = Text(self, width=40, height=4, font=self.big_font)
         self.out.grid(row=5, column=0, columnspan=2)
+
+        #Field to show the color that the user entered
+        self.answer_canvas = Canvas(self, width=self.ans_width, height=self.ans_height)
+        self.answer_canvas.create_rectangle(1,1,self.ans_width,self.ans_height)
+        self.answer_canvas.create_text(2,1,text="Your Answer:",anchor=NW)
+        self.answer_canvas.grid(row=5, column=2)
 
 root = Tk()
 root.title("Learn RGB")
