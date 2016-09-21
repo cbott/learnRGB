@@ -5,7 +5,7 @@ import tkFont
 master = Tk()
 
 #just a big font so things are bigger
-helv36 = tkFont.Font(root=master,family='Helvetica',size=24)
+big_font = tkFont.Font(root=master,family='Helvetica',size=24)
 
 #Actual color of the displayed rectangle
 current_red = 0
@@ -41,29 +41,29 @@ def submit():
 w = Canvas(master, width=1000, height=500)
 w.grid(row=0, column=0, columnspan=4)
 
-Label(master, font=helv36, text="Red:").grid(row=1, column=0)
-r_in = Entry(master, font=helv36)
+Label(master, font=big_font, text="Red:").grid(row=1, column=0)
+r_in = Entry(master, font=big_font)
 r_in.grid(row=1, column=1)
 
-Label(master, font=helv36, text="Green:").grid(row=2, column=0)
-g_in = Entry(master, font=helv36)
+Label(master, font=big_font, text="Green:").grid(row=2, column=0)
+g_in = Entry(master, font=big_font)
 g_in.grid(row=2,column=1)
 
-Label(master, font=helv36, text="Blue:").grid(row=3, column=0)
-b_in = Entry(master, font=helv36)
+Label(master, font=big_font, text="Blue:").grid(row=3, column=0)
+b_in = Entry(master, font=big_font)
 b_in.grid(row=3, column=1)
 
-btn_submit = Button(master, font=helv36, text="Submit!", command=submit)
+btn_submit = Button(master, font=big_font, text="Submit!", command=submit)
 btn_submit.grid(row=4, column=1)
 btn_submit.bind('<Return>', lambda x:submit())
 
-btn_color = Button(master, font=helv36, text="Next Color", command=next_color)
+btn_color = Button(master, font=big_font, text="Next Color", command=next_color)
 btn_color.grid(row=4, column=0)
 #Automatically select the first color input if user hits enter while "next color" is active
 btn_color.bind('<Return>', lambda x:next_color(change_focus=1))
 
 #The text output section - display scores and results
-out = Text(master, width=50, height=4, font=helv36)
+out = Text(master, width=50, height=4, font=big_font)
 out.grid(row=5, column=0, columnspan=2)
 
 next_color()
