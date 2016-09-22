@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from Tkinter import *
 import random
 import tkFont
@@ -9,16 +11,16 @@ def to_hex(rgb):
 class Application(Frame):
     def __init__(self, master):
         #canvas / colored rectangle dimensions
-        self.width = 1000
-        self.height = 500
+        self.width =  800
+        self.height = 300
         #answer rectangle dimenstions
-        self.ans_width = 150
-        self.ans_height= 150
+        self.ans_width = 120
+        self.ans_height= 120
         #Actual color of the displayed rectangle (r,g,b)
         self.current_color = (0,0,0)
 
         #just a big font so things are bigger
-        self.big_font = tkFont.Font(root=master,family='Helvetica',size=24)
+        self.big_font = tkFont.Font(root=master,family='Helvetica',size=20)
 
         Frame.__init__(self, master)
         self.grid()
