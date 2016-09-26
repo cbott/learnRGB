@@ -5,7 +5,7 @@ import random
 import tkFont
 
 def to_hex(rgb):
-    """Change an (r,g,b) tuple to a tkinter-compatible hex string"""
+    """Change an (r, g, b) tuple to a tkinter-compatible hex string"""
     return '#%02x%02x%02x' % rgb
 def clamp_rgb(num):
     """Limit inputs to between 0 and 255"""
@@ -19,11 +19,11 @@ class Application(Frame):
         #answer rectangle dimenstions
         self.ans_width = 120
         self.ans_height= 120
-        #Actual color of the displayed rectangle (r,g,b)
+        #Actual color of the displayed rectangle (r, g, b)
         self.current_color = (0, 0, 0)
 
         #just a big font so things are bigger
-        self.big_font = tkFont.Font(root=master,family='Helvetica',size=20)
+        self.big_font = tkFont.Font(root=master, family='Helvetica', size=20)
 
         Frame.__init__(self, master)
         self.grid()
@@ -33,7 +33,7 @@ class Application(Frame):
     def next_color(self):
         """Change the color currently displayed"""
         self.current_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        self.color_canvas.create_rectangle(0, 0, self.width,self.height, fill=to_hex(self.current_color))
+        self.color_canvas.create_rectangle(0, 0, self.width, self.height, fill=to_hex(self.current_color))
 
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
@@ -52,7 +52,7 @@ class Application(Frame):
         self.out.insert(END, "Your Score:%i"%score)
 
         #Show the user what their answer was
-        self.answer_canvas.create_rectangle(1, 20, self.ans_width-1, self.ans_height-1, fill=to_hex((r,g,b)))
+        self.answer_canvas.create_rectangle(1, 20, self.ans_width-1, self.ans_height-1, fill=to_hex((r, g, b)))
 
 
     def generate(self):
