@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 from Tkinter import *
 import random
@@ -7,6 +7,9 @@ import tkFont
 def to_hex(rgb):
     """Change an (r,g,b) tuple to a tkinter-compatible hex string"""
     return '#%02x%02x%02x' % rgb
+def clamp_rgb(num):
+    """Limit inputs to between 0 and 255"""
+    return max(0, min(num, 255))
 
 class Application(Frame):
     def __init__(self, master):
@@ -35,9 +38,9 @@ class Application(Frame):
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
 
-        r = int(self.r_in.get())
-        g = int(self.g_in.get())
-        b = int(self.b_in.get())
+        r = clamp_rgb(int(self.r_in.get()))
+        g = clamp_rgb(int(self.g_in.get()))
+        b = clamp_rgb(int(self.b_in.get()))
 
         self.out.delete(1.0, END)
         self.out.insert(END, "Actual Red:%i\n"%self.current_color[0])
@@ -93,5 +96,6 @@ class Application(Frame):
 
 root = Tk()
 root.title("Learn RGB")
+root.resizable(0,0)
 app = Application(root)
 root.mainloop()
