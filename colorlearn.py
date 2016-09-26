@@ -26,7 +26,7 @@ class Application(Frame):
         self.big_font = tkFont.Font(root=master, family='Helvetica', size=20)
 
         Frame.__init__(self, master)
-        self.grid()
+        self.pack()
         self.generate()
         self.next_color()
 
@@ -60,42 +60,45 @@ class Application(Frame):
 
         #Canvas used to display the color rectangle
         self.color_canvas = Canvas(self, width=self.width, height=self.height)
-        self.color_canvas.grid(row=0, column=0, columnspan=4)
+        self.color_canvas.pack(fill=BOTH, expand=YES)
 
+        self.left_frame = Frame(self)
+        self.left_frame.pack(side=LEFT)
+        self.right_frame = Frame(self)
+        self.right_frame.pack(side=RIGHT)
 
-        Label(self, font=self.big_font, text="Red:").grid(row=1, column=0)
-        self.r_in = Entry(self, font=self.big_font)
-        self.r_in.grid(row=1, column=1)
+        Label(self.left_frame, font=self.big_font, text="Red:").pack(anchor=E)
+        self.r_in = Entry(self.right_frame, font=self.big_font)
+        self.r_in.pack(anchor=W)
 
-        Label(self, font=self.big_font, text="Green:").grid(row=2, column=0)
-        self.g_in = Entry(self, font=self.big_font)
-        self.g_in.grid(row=2, column=1)
+        Label(self.left_frame, font=self.big_font, text="Green:").pack(anchor=E)
+        self.g_in = Entry(self.right_frame, font=self.big_font)
+        self.g_in.pack(anchor=W)
 
-        Label(self, font=self.big_font, text="Blue:").grid(row=3, column=0)
-        self.b_in = Entry(self, font=self.big_font)
-        self.b_in.grid(row=3, column=1)
+        Label(self.left_frame, font=self.big_font, text="Blue:").pack(anchor=E)
+        self.b_in = Entry(self.right_frame, font=self.big_font)
+        self.b_in.pack(anchor=W)
 
-        self.btn_submit = Button(self, font=self.big_font, text="Submit!", command=self.submit)
-        self.btn_submit.grid(row=4, column=1)
+        self.btn_submit = Button(self.right_frame, font=self.big_font, text="Submit!", command=self.submit)
+        self.btn_submit.pack()
         self.btn_submit.bind('<Return>', lambda x:self.submit())
 
-        self.btn_color = Button(self, font=self.big_font, text="Next Color", command=self.next_color)
-        self.btn_color.grid(row=4, column=0)
+        self.btn_color = Button(self.left_frame, font=self.big_font, text="Next Color", command=self.next_color)
+        self.btn_color.pack()
         #Automatically select the first color input if user hits enter while "next color" is active
         self.btn_color.bind('<Return>', lambda x:[self.next_color(), self.r_in.focus()])
 
         #The text output section - display scores and results
-        self.out = Text(self, width=40, height=4, font=self.big_font)
-        self.out.grid(row=5, column=0, columnspan=2)
+        self.out = Text(self.left_frame, width=20, height=4, font=self.big_font)
+        self.out.pack()
 
         #Field to show the color that the user entered
-        self.answer_canvas = Canvas(self, width=self.ans_width, height=self.ans_height)
+        self.answer_canvas = Canvas(self.right_frame, width=self.ans_width, height=self.ans_height)
         self.answer_canvas.create_rectangle(1, 1, self.ans_width, self.ans_height)
         self.answer_canvas.create_text(self.ans_width/2, 1, text="Your Answer:", anchor=N)
-        self.answer_canvas.grid(row=5, column=2)
+        self.answer_canvas.pack()
 
 root = Tk()
 root.title("Learn RGB")
-root.resizable(0, 0)
 app = Application(root)
 root.mainloop()
