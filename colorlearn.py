@@ -20,7 +20,7 @@ class Application(Frame):
         self.ans_width = 120
         self.ans_height= 120
         #Actual color of the displayed rectangle (r,g,b)
-        self.current_color = (0,0,0)
+        self.current_color = (0, 0, 0)
 
         #just a big font so things are bigger
         self.big_font = tkFont.Font(root=master,family='Helvetica',size=20)
@@ -32,8 +32,8 @@ class Application(Frame):
 
     def next_color(self):
         """Change the color currently displayed"""
-        self.current_color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
-        self.color_canvas.create_rectangle(0,0,self.width,self.height, fill=to_hex(self.current_color))
+        self.current_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.color_canvas.create_rectangle(0, 0, self.width,self.height, fill=to_hex(self.current_color))
 
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
@@ -52,9 +52,9 @@ class Application(Frame):
         self.out.insert(END, "Your Score:%i"%score)
 
         #Show the user what their answer was
-        self.answer_canvas.create_rectangle(1,20,self.ans_width-1,self.ans_height-1, fill=to_hex((r,g,b)))
+        self.answer_canvas.create_rectangle(1, 20, self.ans_width-1, self.ans_height-1, fill=to_hex((r,g,b)))
 
-            
+
     def generate(self):
         """Draw fields on the window"""
 
@@ -69,7 +69,7 @@ class Application(Frame):
 
         Label(self, font=self.big_font, text="Green:").grid(row=2, column=0)
         self.g_in = Entry(self, font=self.big_font)
-        self.g_in.grid(row=2,column=1)
+        self.g_in.grid(row=2, column=1)
 
         Label(self, font=self.big_font, text="Blue:").grid(row=3, column=0)
         self.b_in = Entry(self, font=self.big_font)
@@ -90,12 +90,12 @@ class Application(Frame):
 
         #Field to show the color that the user entered
         self.answer_canvas = Canvas(self, width=self.ans_width, height=self.ans_height)
-        self.answer_canvas.create_rectangle(1,1,self.ans_width,self.ans_height)
-        self.answer_canvas.create_text(self.ans_width/2,1,text="Your Answer:",anchor=N)
+        self.answer_canvas.create_rectangle(1, 1, self.ans_width, self.ans_height)
+        self.answer_canvas.create_text(self.ans_width/2, 1, text="Your Answer:", anchor=N)
         self.answer_canvas.grid(row=5, column=2)
 
 root = Tk()
 root.title("Learn RGB")
-root.resizable(0,0)
+root.resizable(0, 0)
 app = Application(root)
 root.mainloop()
