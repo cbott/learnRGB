@@ -3,7 +3,6 @@
 from Tkinter import *
 import random
 import tkFont
-import time
 
 def to_hex(rgb):
     """Change an (r, g, b) tuple to a tkinter-compatible hex string"""
