@@ -36,8 +36,8 @@ class Application(Frame):
     def next_color(self):
         """Change the color currently displayed"""
         self.current_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        self.color_canvas.delete(ALL)
-        self.color_canvas.config(bg = to_hex(self.current_color))
+        self.color_canvas.config(bg=to_hex(self.current_color))
+
 
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
