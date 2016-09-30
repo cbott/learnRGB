@@ -35,8 +35,7 @@ class Application(Frame):
 
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
-
-        print self.color_response
+        self.prompt_canvas.create_rectangle(1, 20, 99, 99, fill=to_hex(tuple(self.color_prompt)))
 
     def select_color(self, color, change):
         """ modify color_response
@@ -77,6 +76,12 @@ class Application(Frame):
 
         self.submit = Button(self, text="Submit", font=self.big_font, command = self.submit)
         self.submit.grid(row=4, column=0)
+
+        #Field to show the color the user was supposed to create
+        self.prompt_canvas = Canvas(self, width=100, height=100)
+        self.prompt_canvas.create_rectangle(1, 1, 100, 100)
+        self.prompt_canvas.create_text(50, 1, text="Actual Color:", anchor=N)
+        self.prompt_canvas.grid(row=4, column=1, columnspan = 3)
 
 root = Tk()
 root.title("Learn RGB")
