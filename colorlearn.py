@@ -1,15 +1,9 @@
 #!/usr/bin/env python2
 
 from Tkinter import *
+from colorlib import to_hex, clamp_rgb, color_score
 import random
 import tkFont
-
-def to_hex(rgb):
-    """Change an (r, g, b) tuple to a tkinter-compatible hex string"""
-    return '#%02x%02x%02x' % rgb
-def clamp_rgb(num):
-    """Limit inputs to between 0 and 255"""
-    return max(0, min(num, 255))
 
 class Application(Frame):
     def __init__(self, master):
@@ -55,8 +49,7 @@ class Application(Frame):
         self.out.insert(END, "Actual Green:%i\n"%self.current_color[1])
         self.out.insert(END, "Actual Blue:%i\n"%self.current_color[2])
 
-        diffsum = abs(self.current_color[0] - r) + abs(self.current_color[1] - g) + abs(self.current_color[2] - b)
-        score = int(((765 - diffsum)/765.0)**2 * 100)
+        score = color_score(self.current_color, (r,g,b))
         self.out.insert(END, "Your Score:%i"%score)
 
         #Show the user what their answer was

@@ -1,15 +1,9 @@
 #!/usr/bin/env python2
 
 from Tkinter import *
+from colorlib import to_hex, clamp_rgb, color_score
 import random
 import tkFont
-
-def to_hex(rgb):
-    """Change an (r, g, b) tuple to a tkinter-compatible hex string"""
-    return '#%02x%02x%02x' % rgb
-def clamp_rgb(num):
-    """Limit inputs to between 0 and 255"""
-    return max(0, min(num, 255))
 
 class Application(Frame):
     def __init__(self, master):
@@ -36,13 +30,16 @@ class Application(Frame):
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
         self.prompt_canvas.create_rectangle(1, 20, 99, 99, fill=to_hex(tuple(self.color_prompt)))
+        self.text_out.delete(1.0, END)
+        self.text_out.insert(END, "You Entered:(%i, %i, %i)\n"%tuple(self.color_response))
+        self.text_out.insert(END, "Your Score:%i"%color_score(self.color_prompt, self.color_response))
+
 
     def select_color(self, color, change):
         """ modify color_response
             0 = red, 1 = green, 2 = blue """
         self.color_response[color] = clamp_rgb(self.color_response[color]+change)
         self.answer_canvas.config(bg=to_hex(tuple(self.color_response)))
-        #print self.color_response
 
     def generate(self):
         """Draw fields on the window"""
@@ -82,6 +79,10 @@ class Application(Frame):
         self.prompt_canvas.create_rectangle(1, 1, 100, 100)
         self.prompt_canvas.create_text(50, 1, text="Actual Color:", anchor=N)
         self.prompt_canvas.grid(row=4, column=1, columnspan = 3)
+
+        #Text output for scores
+        self.text_out = Text(self, width="30", height=3, font=self.big_font)
+        self.text_out.grid(row=5, column=0, columnspan=4)
 
 root = Tk()
 root.title("Learn RGB")
