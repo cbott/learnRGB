@@ -52,19 +52,19 @@ class Application(Frame):
 
         self.red_decrease = Button(self, text="<", font=self.big_font, command=lambda:self.select_color(0, -1), repeatdelay=200, repeatinterval=10)
         self.red_decrease.grid(row=1, column=0)
-        Label(self, font=self.big_font, text="Red").grid(row=1, column=1, sticky=W)
+        Label(self, font=self.big_font, text="Red").grid(row=1, column=1, sticky=N)
         self.red_increase = Button(self, text=">", font=self.big_font, command=lambda:self.select_color(0, 1), repeatdelay=200, repeatinterval=10)
         self.red_increase.grid(row=1, column=2)
 
         self.green_decrease = Button(self, text="<", font=self.big_font, command=lambda:self.select_color(1, -1), repeatdelay=200, repeatinterval=10)
         self.green_decrease.grid(row=2, column=0)
-        Label(self, font=self.big_font, text="Green").grid(row=2, column=1, sticky=W)
+        Label(self, font=self.big_font, text="Green").grid(row=2, column=1, sticky=N)
         self.green_increase = Button(self, text=">", font=self.big_font, command=lambda:self.select_color(1, 1), repeatdelay=200, repeatinterval=10)
         self.green_increase.grid(row=2, column=2)
 
         self.blue_decrease = Button(self, text="<", font=self.big_font, command=lambda:self.select_color(2, -1), repeatdelay=200, repeatinterval=10)
         self.blue_decrease.grid(row=3, column=0)
-        Label(self, font=self.big_font, text="Blue").grid(row=3, column=1, sticky=W)
+        Label(self, font=self.big_font, text="Blue").grid(row=3, column=1, sticky=N)
         self.blue_increase = Button(self, text=">", font=self.big_font, command=lambda:self.select_color(2, 1), repeatdelay=200, repeatinterval=10)
         self.blue_increase.grid(row=3, column=2)
 
@@ -72,16 +72,16 @@ class Application(Frame):
         self.answer_canvas.grid(row=1, column=3, rowspan=3, columnspan=3)
 
         self.submit = Button(self, text="Submit", font=self.big_font, command = self.submit)
-        self.submit.grid(row=4, column=0)
+        self.submit.grid(row=4, column=0, columnspan=3)
 
         #Field to show the color the user was supposed to create
         self.prompt_canvas = Canvas(self, width=100, height=100)
         self.prompt_canvas.create_rectangle(1, 1, 100, 100)
         self.prompt_canvas.create_text(50, 1, text="Actual Color:", anchor=N)
-        self.prompt_canvas.grid(row=4, column=1, columnspan = 3)
+        self.prompt_canvas.grid(row=4, column=3, columnspan = 3)
 
         #Text output for scores
-        self.text_out = Text(self, width="30", height=3, font=self.big_font)
+        self.text_out = Text(self, width="30", height=2, font=self.big_font)
         self.text_out.grid(row=5, column=0, columnspan=4)
 
 root = Tk()
