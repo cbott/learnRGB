@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 from Tkinter import *
-from colorlib import to_hex, clamp_rgb, color_score
+from colorlib import *
 import random
 import tkFont
 
@@ -27,6 +27,7 @@ class Application(Frame):
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
 
+        self.mode = StringVar() #format for representing colors: INT/HEX
         self.generate()
         self.next_color()
 
@@ -40,17 +41,38 @@ class Application(Frame):
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
 
-        r = clamp_rgb(float(self.r_in.get()))
-        g = clamp_rgb(float(self.g_in.get()))
-        b = clamp_rgb(float(self.b_in.get()))
+        try:
+            if self.mode.get() == "INT":
+                r = float(self.r_in.get())
+                g = float(self.g_in.get())
+                b = float(self.b_in.get())
+            else: # "HEX" mode
+                r = int(self.r_in.get(), 16)
+                g = int(self.g_in.get(), 16)
+                b = int(self.b_in.get(), 16)
+        except Exception as e:
+            r = 0
+            g = 0
+            b = 0
+
+        r = clamp_rgb(r)
+        g = clamp_rgb(g)
+        b = clamp_rgb(b)
 
         self.out.delete(1.0, END)
-        self.out.insert(END, "Actual Red:%i\n"%self.current_color[0])
-        self.out.insert(END, "Actual Green:%i\n"%self.current_color[1])
-        self.out.insert(END, "Actual Blue:%i\n"%self.current_color[2])
+
+        if self.mode.get() == "INT":
+            self.out.insert(END, "Actual Red    : %i\n"%self.current_color[0])
+            self.out.insert(END, "Actual Green: %i\n"%self.current_color[1])
+            self.out.insert(END, "Actual Blue   : %i\n"%self.current_color[2])
+        else:
+            def fmt(color): return hex(color)[2:].zfill(2)
+            self.out.insert(END, "Actual Red    : #%s\n"%fmt(self.current_color[0]))
+            self.out.insert(END, "Actual Green: #%s\n"%fmt(self.current_color[1]))
+            self.out.insert(END, "Actual Blue   : #%s\n"%fmt(self.current_color[2]))
 
         score = color_score(self.current_color, (r,g,b))
-        self.out.insert(END, "Your Score:%i"%score)
+        self.out.insert(END, "Your Score: %i"%score)
 
         #Show the user what their answer was
         self.answer_canvas.create_rectangle(1, 20, self.ans_width-1, self.ans_height-1, fill=to_hex((r, g, b)))
@@ -59,11 +81,11 @@ class Application(Frame):
         """Draw fields on the window"""
 
         #Canvas used to display the color rectangle
-        self.color_canvas = Canvas(self)#, width=self.width, height=self.height)
+        self.color_canvas = Canvas(self)
         self.color_canvas.grid(row=0, column=0, columnspan=3, sticky=(E, W, S, N))
 
-        self.content = Frame(self)
-        self.content.grid(sticky=(N))
+        self.content = Frame(self, pady=10)
+        self.content.grid(sticky=N)
 
         Label(self.content, font=self.big_font, text="Red:").grid(row=1, column=0)
         self.r_in = Entry(self.content, font=self.big_font)
@@ -77,6 +99,13 @@ class Application(Frame):
         self.b_in = Entry(self.content, font=self.big_font)
         self.b_in.grid(row=3, column=1)
 
+        Label(self.content,text="Representation:").grid(row=1, column=2, sticky=S)
+        self.select_int = Radiobutton(self.content, text="Int", variable=self.mode, value="INT", takefocus=False)
+        self.select_hex = Radiobutton(self.content, text="Hex", variable=self.mode, value="HEX", takefocus=False)
+        self.select_int.select()
+        self.select_int.grid(row=2, column=2, sticky=W)
+        self.select_hex.grid(row=3, column=2, sticky=NW)
+
         self.btn_submit = Button(self.content, font=self.big_font, text="Submit!", command=self.submit)
         self.btn_submit.grid(row=4, column=1)
         self.btn_submit.bind('<Return>', lambda x:self.submit())
@@ -87,7 +116,7 @@ class Application(Frame):
         self.btn_color.bind('<Return>', lambda x:[self.next_color(), self.r_in.focus()])
 
         #The text output section - display scores and results
-        self.out = Text(self.content, width=40, height=4, font=self.big_font)
+        self.out = Text(self.content, width=40, height=4, font=self.big_font, takefocus=False)
         self.out.grid(row=5, column=0, columnspan=2)
 
         #Field to show the color that the user entered
