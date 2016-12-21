@@ -6,7 +6,7 @@ def to_hex(rgb):
 
 def clamp_rgb(num):
     """Limit inputs to between 0 and 255"""
-    return max(0, min(num, 255))
+    return int(max(0, min(num, 255)))
 
 def color_score(actual_rgb, guess_rgb):
     """ 

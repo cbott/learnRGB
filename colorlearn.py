@@ -40,9 +40,9 @@ class Application(Frame):
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
 
-        r = clamp_rgb(int(self.r_in.get()))
-        g = clamp_rgb(int(self.g_in.get()))
-        b = clamp_rgb(int(self.b_in.get()))
+        r = clamp_rgb(float(self.r_in.get()))
+        g = clamp_rgb(float(self.g_in.get()))
+        b = clamp_rgb(float(self.b_in.get()))
 
         self.out.delete(1.0, END)
         self.out.insert(END, "Actual Red:%i\n"%self.current_color[0])
