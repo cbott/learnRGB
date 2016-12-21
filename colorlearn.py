@@ -43,34 +43,28 @@ class Application(Frame):
 
         if self.mode.get() == "INT":
             # string to int
-            def convert(s): return float(s)
+            def convert(s):
+                try:
+                    return float(s)
+                except Exception:
+                    return 0
             # int to string
             def fmt(color): return str(color)
         else:
             # "HEX" mode
             # convert a hex string to an integer ("a" -> 10)
-            def convert(s): return int(s, 16)
+            def convert(s):
+                try:
+                    return int(s, 16)
+                except Exception:
+                    return 0
             # Format integers as hex strings (10 -> "0a")
             def fmt(color): return hex(color)[2:].zfill(2)
 
-        # Read in user input, default to zero if invalid value is entered
-        try:
-            r = convert(self.r_in.get())
-        except:
-            r = 0
-        try:
-            g = convert(self.g_in.get())
-        except:
-            g = 0
-        try:
-            b = convert(self.b_in.get())
-        except:
-            b = 0
-
-        # Limit colors to within valid range of RGB (0-255)
-        r = clamp_rgb(r)
-        g = clamp_rgb(g)
-        b = clamp_rgb(b)
+        # Read in user input, limit to within valid range of RGB (0-255)
+        r = clamp_rgb(convert(self.r_in.get()))
+        g = clamp_rgb(convert(self.g_in.get()))
+        b = clamp_rgb(convert(self.b_in.get()))
 
         # Update input box with validated inputs to give user feedback
         # on which values were accepted
