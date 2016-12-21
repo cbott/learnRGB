@@ -53,6 +53,7 @@ class Application(Frame):
             # Format integers as hex strings (10 -> "0a")
             def fmt(color): return hex(color)[2:].zfill(2)
 
+        # Read in user input, default to zero if invalid value is entered
         try:
             r = convert(self.r_in.get())
         except:
@@ -66,12 +67,13 @@ class Application(Frame):
         except:
             b = 0
 
+        # Limit colors to within valid range of RGB (0-255)
         r = clamp_rgb(r)
         g = clamp_rgb(g)
         b = clamp_rgb(b)
 
-        
-
+        # Update input box with validated inputs to give user feedback
+        # on which values were accepted
         self.r_in.delete(0,END)
         self.r_in.insert(0, fmt(r))
         self.g_in.delete(0,END)
@@ -81,14 +83,9 @@ class Application(Frame):
 
         # Show results in output Text box
         self.out.delete(1.0, END)
-        if self.mode.get() == "INT":
-            self.out.insert(END, "Actual Red    : %i\n"%self.current_color[0])
-            self.out.insert(END, "Actual Green: %i\n"%self.current_color[1])
-            self.out.insert(END, "Actual Blue   : %i\n"%self.current_color[2])
-        else: # "HEX" mode
-            self.out.insert(END, "Actual Red    : #%s\n"%fmt(self.current_color[0]))
-            self.out.insert(END, "Actual Green: #%s\n"%fmt(self.current_color[1]))
-            self.out.insert(END, "Actual Blue   : #%s\n"%fmt(self.current_color[2]))
+        self.out.insert(END, "Actual Red    : %s\n"%fmt(self.current_color[0]))
+        self.out.insert(END, "Actual Green: %s\n"%fmt(self.current_color[1]))
+        self.out.insert(END, "Actual Blue   : %s\n"%fmt(self.current_color[2]))
 
         score = color_score(self.current_color, (r,g,b))
         self.out.insert(END, "Your Score: %i"%score)
