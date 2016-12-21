@@ -41,32 +41,51 @@ class Application(Frame):
     def submit(self):
         """Display the results: comparing user-entered values to actual color values"""
 
+        if self.mode.get() == "INT":
+            # string to int
+            def convert(s): return float(s)
+            # int to string
+            def fmt(color): return str(color)
+        else:
+            # "HEX" mode
+            # convert a hex string to an integer ("a" -> 10)
+            def convert(s): return int(s, 16)
+            # Format integers as hex strings (10 -> "0a")
+            def fmt(color): return hex(color)[2:].zfill(2)
+
         try:
-            if self.mode.get() == "INT":
-                r = float(self.r_in.get())
-                g = float(self.g_in.get())
-                b = float(self.b_in.get())
-            else: # "HEX" mode
-                r = int(self.r_in.get(), 16)
-                g = int(self.g_in.get(), 16)
-                b = int(self.b_in.get(), 16)
-        except Exception as e:
+            r = convert(self.r_in.get())
+        except:
             r = 0
+        try:
+            g = convert(self.g_in.get())
+        except:
             g = 0
+        try:
+            b = convert(self.b_in.get())
+        except:
             b = 0
 
         r = clamp_rgb(r)
         g = clamp_rgb(g)
         b = clamp_rgb(b)
 
-        self.out.delete(1.0, END)
+        
 
+        self.r_in.delete(0,END)
+        self.r_in.insert(0, fmt(r))
+        self.g_in.delete(0,END)
+        self.g_in.insert(0, fmt(g))
+        self.b_in.delete(0,END)
+        self.b_in.insert(0, fmt(b))
+
+        # Show results in output Text box
+        self.out.delete(1.0, END)
         if self.mode.get() == "INT":
             self.out.insert(END, "Actual Red    : %i\n"%self.current_color[0])
             self.out.insert(END, "Actual Green: %i\n"%self.current_color[1])
             self.out.insert(END, "Actual Blue   : %i\n"%self.current_color[2])
-        else:
-            def fmt(color): return hex(color)[2:].zfill(2)
+        else: # "HEX" mode
             self.out.insert(END, "Actual Red    : #%s\n"%fmt(self.current_color[0]))
             self.out.insert(END, "Actual Green: #%s\n"%fmt(self.current_color[1]))
             self.out.insert(END, "Actual Blue   : #%s\n"%fmt(self.current_color[2]))
